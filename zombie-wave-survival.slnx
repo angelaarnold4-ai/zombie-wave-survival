@@ -1,10 +1,17 @@
-<Solution>
+﻿<Solution>
+  <Project Path="Unity.Cinemachine.Editor.csproj" />
+  <Project Path="Unity.InputSystem.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Unity.Cinemachine.csproj" />
   <Project Path="CFXRRuntime.csproj" />
   <Project Path="CFXRDemo.csproj" />
   <Project Path="CFXREditor.csproj" />
+  <Project Path="Unity.InputSystem.ForUI.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Unity.InputSystem.TestFramework.csproj" />
   <Project Path="KinoBloom.Runtime.csproj" />
   <Project Path="CFXR.WelcomeScreen.csproj" />
   <Project Path="ToonyColorsPro.Demo.Editor.csproj" />
+  <Project Path="Unity.InputSystem.DocCodeSamples.csproj" />
+  <Project Path="Unity.InputSystem.IntegrationTests.csproj" />
 </Solution>

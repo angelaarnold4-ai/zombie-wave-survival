@@ -572,8 +572,6 @@ GameObject:
   - component: {fileID: 504653059}
   - component: {fileID: 504653058}
   - component: {fileID: 504653057}
-  - component: {fileID: 504653062}
-  - component: {fileID: 504653061}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -678,37 +676,6 @@ Transform:
   - {fileID: 1300632544}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &504653061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504653056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e25da22dfac2624a8d2e3271d7dfc96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 100
-  currentHealth: 0
-  healthBar: {fileID: 1450955171}
---- !u!114 &504653062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504653056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 266cd71de939f764ca0f9fc60aa81183, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerShoot
-  damage: 10
-  range: 100
-  fireRate: 0.5
-  mainCamera: {fileID: 1547599086}
 --- !u!1 &522329518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,10 +1162,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombie character 1
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: a220c81a931d36046b513e1ee550e710, type: 3}
-      propertyPath: m_TagString
-      value: Zombie
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: a220c81a931d36046b513e1ee550e710, type: 3}
     m_RemovedGameObjects: []
@@ -1213,12 +1176,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a220c81a931d36046b513e1ee550e710, type: 3}
       insertIndex: -1
       addedObject: {fileID: 671018835}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a220c81a931d36046b513e1ee550e710, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 671018836}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a220c81a931d36046b513e1ee550e710, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 671018837}
   m_SourcePrefab: {fileID: 100100000, guid: a220c81a931d36046b513e1ee550e710, type: 3}
 --- !u!1 &671018832 stripped
 GameObject:
@@ -1284,42 +1241,6 @@ MonoBehaviour:
   player: {fileID: 0}
   attackRange: 2
   attackCooldown: 1.5
---- !u!136 &671018836
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 671018832}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &671018837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 671018832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 316869d328d52f646a5aa6434091319c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ZombieHealth
-  health: 50
 --- !u!1 &739070451
 GameObject:
   m_ObjectHideFlags: 0
@@ -2884,7 +2805,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1450955169}
   - component: {fileID: 1450955170}
-  - component: {fileID: 1450955171}
   m_Layer: 5
   m_Name: Healthbar
   m_TagString: Untagged
@@ -2965,19 +2885,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1450955171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1450955168}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d75011171cb5104e9c3201095ab0677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthBar
-  slider: {fileID: 1450955170}
 --- !u!1 &1547599083
 GameObject:
   m_ObjectHideFlags: 0
@@ -3108,13 +3015,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547599083}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06621645, y: -0.0015801409, z: 0.0062031215, w: 0.9977848}
-  m_LocalPosition: {x: 0.013, y: 1.678, z: -0.96}
+  m_LocalRotation: {x: 0.15718946, y: -0.0010062245, z: 0.0063216356, w: 0.98754776}
+  m_LocalPosition: {x: 0.00999999, y: 1.915, z: -0.928}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1300632544}
-  m_LocalEulerAnglesHint: {x: 7.594, y: -0.135, z: 0.703}
+  m_LocalEulerAnglesHint: {x: 18.088, y: 0, z: 0.734}
 --- !u!1 &1578601713
 GameObject:
   m_ObjectHideFlags: 0
