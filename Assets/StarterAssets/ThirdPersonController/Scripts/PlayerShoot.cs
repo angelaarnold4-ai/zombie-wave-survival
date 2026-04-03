@@ -22,28 +22,27 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    void Shoot()
+void Shoot()
+{
+    Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+    RaycastHit hit;
+
+    // This creates a "mask" that includes everything EXCEPT the Player layer
+    int layerMask = ~LayerMask.GetMask("Player"); 
+
+    // Add 'layerMask' to the end of your Raycast command
+    if (Physics.Raycast(ray, out hit, range, layerMask))
     {
-        // Create a ray from the center of the viewport (the screen)
-        Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-
-        // Perform the Raycast
-        if (Physics.Raycast(ray, out hit, range))
+        Debug.Log("Hit: " + hit.transform.name);
+        
+        if (hit.transform.CompareTag("Zombie"))
         {
-            Debug.Log("Hit: " + hit.transform.name);
-
-            // Check if the object we hit has the "Zombie" tag
-            if (hit.transform.CompareTag("Zombie"))
+            Zombie zombieScript = hit.transform.GetComponent<Zombie>();
+            if (zombieScript != null)
             {
-                // Try to find a script on the zombie that has TakeDamage
-                // Replace 'ZombieHealth' with whatever your health script name is
-                var zombie = hit.transform.GetComponent<ZombieHealth>();
-                if (zombie != null)
-                {
-                    zombie.TakeDamage(damage);
-                }
+                zombieScript.TakeDamage(damage);
             }
         }
     }
+}
 }
