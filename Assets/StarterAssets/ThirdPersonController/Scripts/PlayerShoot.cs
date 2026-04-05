@@ -29,17 +29,18 @@ void Shoot()
 
     int layerMask = ~LayerMask.GetMask("Player"); 
 
-    // Add 'layerMask' to the end of your Raycast command
     if (Physics.Raycast(ray, out hit, range, layerMask))
     {
         Debug.Log("Hit: " + hit.transform.name);
         
         if (hit.transform.CompareTag("Zombie"))
         {
-            Zombie zombieScript = hit.transform.GetComponent<Zombie>();
-            if (zombieScript != null)
+            // CHANGE THIS LINE: Look for ZombieHealth instead of Zombie
+            ZombieHealth healthScript = hit.transform.GetComponent<ZombieHealth>();
+            
+            if (healthScript != null)
             {
-                zombieScript.TakeDamage(damage);
+                healthScript.TakeDamage(damage);
             }
         }
     }

@@ -1,26 +1,33 @@
 using UnityEngine;
+using UnityEngine.AI; // Needed for NavMesh
 
 public class Zombie : MonoBehaviour
 {
-    [Header("Health Settings")]
-    public float currentHealth = 100f;
+    private NavMeshAgent agent;
+    private Animator anim;
+    private Transform player;
 
-    // Public so the PlayerShoot script can see it
-    public void TakeDamage(float amount)
+    void Start()
     {
-        currentHealth -= amount;
-        Debug.Log("Zombie took damage! Health left: " + currentHealth);
-
-        if (currentHealth <= 0f)
-        {
-            Die();
-        }
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
+        
+        // This finds your player so the zombie knows where to go
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null) player = playerObj.transform;
     }
 
-    void Die()
+    void Update()
     {
-    // Find the WaveManager. Tell it a zombie died
-    FindAnyObjectByType<WaveManager>().ZombieDied();
-    Destroy(gameObject);
+        if (player != null)
+        {
+            // Move toward player
+            agent.SetDestination(player.position);
+        }
+
+        // Fix the "weird" animation by sending speed to the Animator
+        // If speed is 0, it plays Idle. If speed is > 0, it plays Walk.
+        float speed = agent.velocity.magnitude;
+        anim.SetFloat("Speed", speed);
     }
 }
