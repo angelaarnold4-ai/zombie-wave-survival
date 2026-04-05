@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI; // Required for using the Slider component
+using UnityEngine.UI; 
 
 public class HealthBar : MonoBehaviour
 {

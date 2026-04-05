@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        // Initialize the health bar at the start
+        // Initialize the health bar at start
         healthBar.SetMaxHealth(maxHealth);
     }
 
@@ -19,7 +20,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth -= amount;
 
-        // Update the UI health bar
+        // Update UI health bar
         healthBar.UpdateHealth(currentHealth);
 
         if (currentHealth <= 0)
@@ -28,9 +29,24 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (currentHealth <= 0)
+        {
+        Die(); 
+        }
+    }
+
+    void GameOver()
+    {
+    Debug.Log("GAME OVER");
+    
+    }
+
     void Die()
     {
-        Debug.Log("Game Over");
-        // You could also disable movement or reload the scene here
+        // This tells the ScoreManager to reset the game
+        ScoreManager.instance.TriggerGameOver();
+        
     }
 }

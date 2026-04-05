@@ -27,7 +27,6 @@ void Shoot()
     Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
     RaycastHit hit;
 
-    // This creates a "mask" that includes everything EXCEPT the Player layer
     int layerMask = ~LayerMask.GetMask("Player"); 
 
     // Add 'layerMask' to the end of your Raycast command

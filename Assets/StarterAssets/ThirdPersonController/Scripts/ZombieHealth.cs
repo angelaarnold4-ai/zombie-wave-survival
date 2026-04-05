@@ -17,8 +17,8 @@ public class ZombieHealth : MonoBehaviour
 
     void Die()
     {
-        // For now, just destroy the zombie. 
-        // Later you can add animations here!
+        // Destroys the zombie. 
+        // Add animations here
         Destroy(gameObject);
     }
 }

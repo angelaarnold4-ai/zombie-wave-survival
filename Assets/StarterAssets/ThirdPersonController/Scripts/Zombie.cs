@@ -5,7 +5,7 @@ public class Zombie : MonoBehaviour
     [Header("Health Settings")]
     public float currentHealth = 100f;
 
-    // This function is "Public" so the PlayerShoot script can see it
+    // Public so the PlayerShoot script can see it
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
@@ -19,8 +19,8 @@ public class Zombie : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("Zombie has been destroyed!");
-        // This removes the zombie from the game
-        Destroy(gameObject);
+    // Find the WaveManager. Tell it a zombie died
+    FindAnyObjectByType<WaveManager>().ZombieDied();
+    Destroy(gameObject);
     }
 }
