@@ -14,7 +14,7 @@ public class PlayerShoot : MonoBehaviour
 
     void Update()
     {
-        // Check if player clicks Left Mouse Button and if enough time has passed
+        // Check if player clicks left mouse and if enough time passed
         if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + fireRate;
@@ -35,7 +35,7 @@ void Shoot()
         
         if (hit.transform.CompareTag("Zombie"))
         {
-            // CHANGE THIS LINE: Look for ZombieHealth instead of Zombie
+            
             ZombieHealth healthScript = hit.transform.GetComponent<ZombieHealth>();
             
             if (healthScript != null)

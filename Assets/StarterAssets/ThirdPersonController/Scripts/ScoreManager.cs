@@ -1,13 +1,12 @@
 using UnityEngine;
 using TMPro; 
-using UnityEngine.SceneManagement; // This allows the "Restart" logic
+using UnityEngine.SceneManagement; // This allows the restart logic
 
 public class ScoreManager : MonoBehaviour
 {
-    // This "Instance" lets other scripts talk to this one easily
     public static ScoreManager instance;
 
-    public TextMeshProUGUI killText; // Someone else connects their UI here
+    public TextMeshProUGUI killText; 
     public TextMeshProUGUI waveText;
     
     private int totalKills = 0;
@@ -30,11 +29,11 @@ public class ScoreManager : MonoBehaviour
             waveText.text = "Wave: " + waveNumber;
     }
 
-    // CALL THIS from your Player script when Health <= 0
+    // Called from Player script when health <= 0
     public void TriggerGameOver()
     {
         Debug.Log("Player Died. Restarting Level...");
-        // Re-loads the current scene from scratch
+        // Reloads the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

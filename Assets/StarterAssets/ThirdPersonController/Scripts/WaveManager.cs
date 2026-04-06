@@ -34,7 +34,7 @@ public class WaveManager : MonoBehaviour
 
         for (int i = 0; i < zombiesToSpawn; i++)
         {
-            // Perimeter Spawning: Pick a random spot on a circle
+            // Perimeter Spawning
             Vector2 randomPoint = Random.insideUnitCircle.normalized * spawnRadius;
             Vector3 spawnPos = new Vector3(randomPoint.x, 0, randomPoint.y);
 

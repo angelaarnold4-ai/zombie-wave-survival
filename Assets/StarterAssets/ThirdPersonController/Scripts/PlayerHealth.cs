@@ -45,7 +45,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Die()
     {
-        // This tells the ScoreManager to reset the game
+        // Tells ScoreManager to reset the game
         ScoreManager.instance.TriggerGameOver();
         
     }
