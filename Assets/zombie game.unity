@@ -5425,7 +5425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a89ee19520a2840a2aa6b99a1bf833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
-  zombiePrefab: {fileID: 0}
+  zombiePrefab: {fileID: 1970840426174511834, guid: b1544b15d8a7fc7448be8c8deb3bdd9c, type: 3}
   spawnRadius: 5
   timeBetweenWaves: 7
 --- !u!4 &384562127
