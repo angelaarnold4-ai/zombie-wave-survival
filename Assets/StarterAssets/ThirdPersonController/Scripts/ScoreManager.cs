@@ -8,6 +8,7 @@ public class ScoreManager : MonoBehaviour
 
     public TextMeshProUGUI killText; 
     public TextMeshProUGUI waveText;
+    public GameObject GameOverScreen; 
     
     private int totalKills = 0;
 
@@ -32,8 +33,12 @@ public class ScoreManager : MonoBehaviour
     // Called from Player script when health <= 0
     public void TriggerGameOver()
     {
-        Debug.Log("Player Died. Restarting Level...");
-        // Reloads the current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if(GameOverScreen != null)
+        {
+            GameOverScreen.SetActive(true); 
+            Time.timeScale = 0f;           
+            Cursor.lockState = CursorLockMode.None; 
+            Cursor.visible = true;
+        }
     }
 }

@@ -20,5 +20,6 @@ public class ZombieHealth : MonoBehaviour
         // Destroys the zombie. 
         // Add animations here
         Destroy(gameObject);
+        ScoreManager.instance.AddKill();
     }
 }

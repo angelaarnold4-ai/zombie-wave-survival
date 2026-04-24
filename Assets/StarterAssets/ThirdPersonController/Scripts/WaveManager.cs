@@ -10,6 +10,8 @@ public class WaveManager : MonoBehaviour
     private int currentWave = 0;
     private int zombiesToSpawn;
     private int zombiesRemaining;
+    public GameObject waveBanner;
+    public float bannerDuration = 2.0f; 
 
     void Start()
     {
@@ -18,6 +20,7 @@ public class WaveManager : MonoBehaviour
 
     void StartNextWave()
     {
+        StartCoroutine(ShowWaveBanner());
         currentWave++;
         zombiesToSpawn = currentWave * 5; // Wave 1 = 5, Wave 2 = 10, etc.
         zombiesRemaining = zombiesToSpawn;
@@ -51,6 +54,16 @@ public class WaveManager : MonoBehaviour
         if (zombiesRemaining <= 0)
         {
             StartNextWave();
+        }
+    }
+
+    IEnumerator ShowWaveBanner()
+    {
+        if (waveBanner != null)
+        {
+        waveBanner.SetActive(true); 
+        yield return new WaitForSeconds(bannerDuration); 
+        waveBanner.SetActive(false); 
         }
     }
 }
