@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro; 
-using UnityEngine.SceneManagement; // This allows the restart logic
+using UnityEngine.SceneManagement; 
 
 public class ScoreManager : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     public TextMeshProUGUI killText; 
     public TextMeshProUGUI waveText;
     public GameObject GameOverScreen; 
+    public AudioSource gameOverSource;
     
     private int totalKills = 0;
 
@@ -35,10 +36,27 @@ public class ScoreManager : MonoBehaviour
     {
         if(GameOverScreen != null)
         {
+            if (gameOverSource != null)
+            {
+                gameOverSource.Play();
+            }
+
             GameOverScreen.SetActive(true); 
             Time.timeScale = 0f;           
             Cursor.lockState = CursorLockMode.None; 
             Cursor.visible = true;
         }
+    }
+
+    public void LoadMainMenu()
+    {
+    Time.timeScale = 1f; 
+    SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+    Debug.Log("Quit Game Pressed"); 
+    Application.Quit(); 
     }
 }

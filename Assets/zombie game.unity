@@ -7223,6 +7223,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthBar: {fileID: 1450955171}
+  ouchSound: {fileID: 8300000, guid: 869a378c2c1c34ecea3bef36b28d94c0, type: 3}
 --- !u!114 &504653062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7238,6 +7239,7 @@ MonoBehaviour:
   damage: 10
   range: 100
   fireRate: 0.5
+  gunshotSound: {fileID: 8300000, guid: 1c850eeb7e85148369577e3c8df43329, type: 3}
   mainCamera: {fileID: 1547599086}
 --- !u!82 &504653063
 AudioSource:
@@ -8690,6 +8692,7 @@ MonoBehaviour:
   killText: {fileID: 1780223464}
   waveText: {fileID: 1258957720}
   GameOverScreen: {fileID: 250449224}
+  gameOverSource: {fileID: 250449228}
 --- !u!4 &588954301
 Transform:
   m_ObjectHideFlags: 0
@@ -21118,7 +21121,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1371767556}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 588954300}
+        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
+        m_MethodName: LoadMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 588954300}
+        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
+        m_MethodName: QuitGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1371767556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24583,7 +24610,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1578601716}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 588954300}
+        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
+        m_MethodName: LoadMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1578601716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34740,7 +34779,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2136103518}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1677763891}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: RestartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2136103518
 MonoBehaviour:
   m_ObjectHideFlags: 0

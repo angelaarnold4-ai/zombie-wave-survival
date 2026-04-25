@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI; 
 
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
-
-    // Reference to the health bar script
     public HealthBar healthBar;
 
+    [Header("Audio")]
+    public AudioClip ouchSound;
     void Start()
     {
         currentHealth = maxHealth;
@@ -20,7 +21,12 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth -= amount;
 
-        // Update UI health bar
+        if (ouchSound != null)
+        {
+            // Plays the sound exactly where the player is standing
+            AudioSource.PlayClipAtPoint(ouchSound, transform.position);
+        }
+        
         healthBar.UpdateHealth(currentHealth);
 
         if (currentHealth <= 0)

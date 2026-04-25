@@ -6,7 +6,10 @@ public class PlayerShoot : MonoBehaviour
     public float damage = 10f;
     public float range = 100f;
     public float fireRate = 0.5f;
-    
+
+    [Header("Audio")]
+    public AudioClip gunshotSound;
+
     [Header("References")]
     public Camera mainCamera;
     
@@ -22,27 +25,33 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-void Shoot()
-{
-    Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-    RaycastHit hit;
-
-    int layerMask = ~LayerMask.GetMask("Player"); 
-
-    if (Physics.Raycast(ray, out hit, range, layerMask))
+    void Shoot()
     {
-        Debug.Log("Hit: " + hit.transform.name);
-        
-        if (hit.transform.CompareTag("Zombie"))
+        if (gunshotSound != null)
         {
-            
-            ZombieHealth healthScript = hit.transform.GetComponent<ZombieHealth>();
-            
-            if (healthScript != null)
+            AudioSource.PlayClipAtPoint(gunshotSound, transform.position);
+        }
+        
+        Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
+
+        int layerMask = ~LayerMask.GetMask("Player"); 
+
+        if (Physics.Raycast(ray, out hit, range, layerMask))
+        {
+            Debug.Log("Hit: " + hit.transform.name);
+        
+            if (hit.transform.CompareTag("Zombie"))
             {
-                healthScript.TakeDamage(damage);
+            
+                ZombieHealth healthScript = hit.transform.GetComponent<ZombieHealth>();
+            
+                if (healthScript != null)
+                {
+                    healthScript.TakeDamage(damage);
+                }
             }
         }
     }
-}
+    
 }

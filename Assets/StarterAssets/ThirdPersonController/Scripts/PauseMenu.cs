@@ -1,13 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenuUI; // The UI Panel for your pause menu
+    public GameObject pauseMenuUI;
     private bool isPaused = false;
 
     void Update()
     {
-        // Check if the player pressed Escape
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
@@ -23,23 +23,27 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        pauseMenuUI.SetActive(false); // Hide the menu
-        Time.timeScale = 1f;          // Resume game time
+        pauseMenuUI.SetActive(false); 
+        Time.timeScale = 1f;         
         isPaused = false;
         
-        // Relock the cursor for gameplay
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Pause()
     {
-        pauseMenuUI.SetActive(true);  // Show the menu
-        Time.timeScale = 0f;          // Freeze game time
+        pauseMenuUI.SetActive(true);  
+        Time.timeScale = 0f;         
         isPaused = true;
 
-        // Unlock the cursor so you can click buttons
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
 }
