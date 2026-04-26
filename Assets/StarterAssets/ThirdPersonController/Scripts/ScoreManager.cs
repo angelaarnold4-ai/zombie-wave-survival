@@ -39,15 +39,12 @@ public class ScoreManager : MonoBehaviour
     {
         if(GameOverScreen != null)
         {
-            // --- NEW: Logic for Task #7 (Stop all audio) ---
-            // This finds every AudioSource in the game and stops it
             AudioSource[] allAudioSources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
             foreach (AudioSource audio in allAudioSources)
             {
                 audio.Stop();
             }
 
-            // 1. Handle the High Score (Saving to the computer)
             int bestKills = PlayerPrefs.GetInt("HighScore", 0);
             if (totalKills > bestKills)
             {
@@ -56,13 +53,10 @@ public class ScoreManager : MonoBehaviour
                 bestKills = totalKills;
             }
 
-            // 2. Set the text on the Game Over Screen
             if (finalKills != null) finalKills.text = "Final Kills: " + totalKills;
             if (wavesReached != null) wavesReached.text = "Waves Reached: " + currentWave;
             if (highscoreText != null) highscoreText.text = "Best Kills: " + bestKills;
 
-            // 3. Play Game Over sound and show screen
-            // Note: We play this AFTER the loop above so it doesn't get stopped!
             if (gameOverSource != null) gameOverSource.Play();
 
             GameOverScreen.SetActive(true); 
@@ -72,6 +66,6 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    public void LoadMainMenu() { Time.timeScale = 1f; SceneManager.LoadScene("MainMenu"); }
+    public void LoadMainMenu() { Time.timeScale = 1f; SceneManager.LoadScene("Main Menu"); }
     public void QuitGame() { Application.Quit(); }
 }
