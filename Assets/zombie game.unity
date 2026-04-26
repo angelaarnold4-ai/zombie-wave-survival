@@ -4733,6 +4733,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1970840426174511834, guid: b1544b15d8a7fc7448be8c8deb3bdd9c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1742713675}
+    - targetCorrespondingSourceObject: {fileID: 1970840426174511834, guid: b1544b15d8a7fc7448be8c8deb3bdd9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1742713677}
+    - targetCorrespondingSourceObject: {fileID: 1970840426174511834, guid: b1544b15d8a7fc7448be8c8deb3bdd9c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1742713676}
   m_SourcePrefab: {fileID: 100100000, guid: b1544b15d8a7fc7448be8c8deb3bdd9c, type: 3}
 --- !u!1001 &360445351
 PrefabInstance:
@@ -7154,6 +7160,7 @@ GameObject:
   - component: {fileID: 504653061}
   - component: {fileID: 504653063}
   - component: {fileID: 504653064}
+  - component: {fileID: 504653065}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -7180,10 +7187,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25406134
-  m_Height: 1.9490045
+  m_Radius: 0.4928143
+  m_Height: 3.2645063
   m_Direction: 1
-  m_Center: {x: -1.4078315, y: -0.05285448, z: 0}
+  m_Center: {x: -1.4599233, y: 0.60489655, z: -0.12154645}
 --- !u!33 &504653059
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7436,6 +7443,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &504653065
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504653056}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &509752597
 GameObject:
   m_ObjectHideFlags: 0
@@ -28160,6 +28194,47 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &1742713676
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742713667}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1742713677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742713667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50bb4facce079b945a22e07dddbf2cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ZombieAttack
+  damageAmount: 10
+  attackSpeed: 1.5
 --- !u!1 &1749902279
 GameObject:
   m_ObjectHideFlags: 0
