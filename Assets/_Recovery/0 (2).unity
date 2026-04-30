@@ -5207,6 +5207,8 @@ MonoBehaviour:
   zombiePrefab: {fileID: 1970840426174511834, guid: b1544b15d8a7fc7448be8c8deb3bdd9c, type: 3}
   spawnRadius: 5
   timeBetweenWaves: 7
+  waveBanner: {fileID: 0}
+  bannerDuration: 2
 --- !u!4 &384562127
 Transform:
   m_ObjectHideFlags: 0
@@ -7214,9 +7216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e25da22dfac2624a8d2e3271d7dfc96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 100
-  currentHealth: 0
+  redVignette: {fileID: 0}
   healthBar: {fileID: 1450955171}
+  maxHealth: 100
+  ouchSound: {fileID: 0}
 --- !u!114 &504653062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7232,6 +7235,7 @@ MonoBehaviour:
   damage: 10
   range: 100
   fireRate: 0.5
+  gunshotSound: {fileID: 0}
   mainCamera: {fileID: 1547599086}
 --- !u!82 &504653063
 AudioSource:
@@ -8681,8 +8685,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b84a2acb2dcce9b418cae5d31cb92a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
-  killText: {fileID: 1780223464}
-  waveText: {fileID: 1258957720}
+  killCounter: {fileID: 0}
+  waveCounter: {fileID: 0}
+  finalKills: {fileID: 0}
+  wavesReached: {fileID: 0}
+  highscoreText: {fileID: 0}
+  GameOverScreen: {fileID: 0}
+  gameOverSource: {fileID: 0}
 --- !u!4 &588954301
 Transform:
   m_ObjectHideFlags: 0
@@ -9956,7 +9965,9 @@ PrefabInstance:
       propertyPath: ShoulderOffset.z
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+    - {fileID: 2909022204778651217, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -30075,7 +30086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d409cc07f15bfe34d809d9d229e21d46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieSpawner
-  zombiePrefab: {fileID: 1742713667}
+  zombiePrefabs: []
   spawnPoints:
   - {fileID: 1237071057}
   - {fileID: 509752598}
@@ -30084,6 +30095,10 @@ MonoBehaviour:
   - {fileID: 1607539459}
   - {fileID: 1144389980}
   spawnInterval: 12
+  zombiesPerWave: 10
+  speedBoostPerWave: 0.5
+  wavePauseDuration: 5
+  countdownText: {fileID: 0}
 --- !u!4 &1840206525
 Transform:
   m_ObjectHideFlags: 0
