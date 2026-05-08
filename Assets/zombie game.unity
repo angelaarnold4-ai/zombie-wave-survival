@@ -39209,10 +39209,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExplorerPlayerShoot
   damage: 25
   range: 100
-  fireRate: 0.46
-  enemyLayers:
+  fireRate: 0.15
+  hitLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
+  sphereCastRadius: 0.15
   muzzleFlash: {fileID: 1550678796}
   hitEffect: {fileID: 0}
   shootSound: {fileID: 8300000, guid: 1c850eeb7e85148369577e3c8df43329, type: 3}

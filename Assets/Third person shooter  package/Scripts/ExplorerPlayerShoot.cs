@@ -5,9 +5,12 @@ public class ExplorerPlayerShoot : MonoBehaviour
 {
     [Header("Shooting")]
     public float damage = 25f;
-    public float range = 100f;
-    public float fireRate = 0.5f;
-    public LayerMask enemyLayers;
+    public float range = 200f;
+    public float fireRate = 0.15f;
+
+    [Header("Hit Detection")]
+    public LayerMask hitLayers;
+    public float sphereCastRadius = 0.15f;
 
     [Header("Effects")]
     public ParticleSystem muzzleFlash;
@@ -29,12 +32,15 @@ public class ExplorerPlayerShoot : MonoBehaviour
         _mainCamera = Camera.main;
         _animator = GetComponentInChildren<Animator>();
         _animFire = Animator.StringToHash("Fire");
+
+        // If no layers set, hit everything
+        if (hitLayers == 0)
+            hitLayers = ~0;
     }
 
     void Update()
     {
-        // Use Update instead of Input callback
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current.leftButton.isPressed)
         {
             TryShoot();
         }
@@ -45,42 +51,63 @@ public class ExplorerPlayerShoot : MonoBehaviour
         if (Time.time < _nextFireTime) return;
         _nextFireTime = Time.time + fireRate;
 
-        // Muzzle flash
+        // Effects
         if (muzzleFlash != null)
             muzzleFlash.Play();
 
-        // Shoot sound
         if (shootSound != null && _audioSource != null)
             _audioSource.PlayOneShot(shootSound);
 
-        // Fire animation
         if (_animator != null)
             _animator.SetTrigger(_animFire);
 
-        // Raycast from camera center
         if (_mainCamera == null) return;
 
-        Ray ray = _mainCamera.ScreenPointToRay(
-            new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+        // Get exact screen center ray
+        Vector3 screenCenter = new Vector3(
+            Screen.width / 2f, 
+            Screen.height / 2f, 
+            0f);
 
-        Debug.DrawRay(ray.origin, ray.direction * range, Color.red, 1f);
+        Ray ray = _mainCamera.ScreenPointToRay(screenCenter);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, range))
+        // Use SphereCast for more forgiving hit detection
+        RaycastHit[] hits = Physics.SphereCastAll(
+            ray.origin,
+            sphereCastRadius,
+            ray.direction,
+            range,
+            hitLayers);
+
+        // Sort by distance — hit closest first
+        System.Array.Sort(hits, (a, b) => 
+            a.distance.CompareTo(b.distance));
+
+        foreach (RaycastHit hit in hits)
         {
-            Debug.Log("Hit: " + hit.collider.gameObject.name);
+            // Skip the player itself
+            if (hit.collider.transform.IsChildOf(transform) ||
+                hit.collider.gameObject == gameObject)
+                continue;
 
-            // Hit effect
+            Debug.Log("Hit: " + hit.collider.gameObject.name 
+                + " at distance " + hit.distance);
+
+            // Spawn hit effect
             if (hitEffect != null)
-                Instantiate(hitEffect, hit.point, 
+                Instantiate(hitEffect, hit.point,
                     Quaternion.LookRotation(hit.normal));
 
-            // Damage zombie
+            // Check for zombie on hit object or any parent
             ZombieAI zombie = hit.collider.GetComponentInParent<ZombieAI>();
             if (zombie != null)
             {
-                Debug.Log("Zombie hit!");
+                Debug.Log("Zombie killed!");
                 zombie.Die();
             }
+
+            // Stop at first valid hit
+            break;
         }
     }
 }
