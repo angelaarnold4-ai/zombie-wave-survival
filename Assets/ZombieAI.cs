@@ -17,7 +17,6 @@ public class ZombieAI : MonoBehaviour
     private bool isDead = false;
     private Transform player;
 
-    // Animator hashes
     private int _animSpeed;
     private int _animAttack;
     private int _animDead;
@@ -27,17 +26,14 @@ public class ZombieAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
-        // Cache animator parameters
         _animSpeed = Animator.StringToHash("Speed");
         _animAttack = Animator.StringToHash("isAttacking");
         _animDead = Animator.StringToHash("isDead");
 
-        // Auto find player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
             player = playerObj.transform;
 
-        // NavMesh Agent settings for better pathfinding
         if (agent != null)
         {
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
@@ -57,10 +53,8 @@ public class ZombieAI : MonoBehaviour
 
         if (distanceToPlayer <= attackRange)
         {
-            // Stop and attack
             agent.isStopped = true;
 
-            // Face the player
             Vector3 direction = (player.position - transform.position).normalized;
             direction.y = 0;
             if (direction != Vector3.zero)
@@ -76,22 +70,23 @@ public class ZombieAI : MonoBehaviour
                 attackTimer = attackCooldown;
 
                 // Deal damage to player
-                PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+                PlayerHealth playerHealth = 
+                    player.GetComponent<PlayerHealth>();
+                if (playerHealth == null)
+                    playerHealth = 
+                        player.GetComponentInChildren<PlayerHealth>();
                 if (playerHealth != null)
                     playerHealth.TakeDamage(damage);
             }
 
-            // Update animation speed to 0 when stopped
             UpdateAnimationSpeed(0f);
         }
         else
         {
-            // Chase player
             agent.isStopped = false;
             agent.SetDestination(player.position);
             animator?.SetBool(_animAttack, false);
 
-            // Update animation speed based on agent velocity
             float speed = agent.velocity.magnitude;
             UpdateAnimationSpeed(speed);
         }
@@ -100,10 +95,7 @@ public class ZombieAI : MonoBehaviour
     void UpdateAnimationSpeed(float speed)
     {
         if (animator == null) return;
-
-        // Use Speed parameter if it exists
-        // otherwise fall back to isAttacking bool
-        animator.SetFloat(_animSpeed, speed, 
+        animator.SetFloat(_animSpeed, speed,
             animationDampTime, Time.deltaTime);
     }
 
@@ -112,17 +104,20 @@ public class ZombieAI : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
+        // Add kill to score
+        if (ScoreManager.instance != null)
+            ScoreManager.instance.AddKill();
+
         if (agent != null)
             agent.isStopped = true;
 
         animator?.SetBool(_animDead, true);
 
-        // Disable collider so no more hits register
-        Collider col = GetComponent<Collider>();
-        if (col != null)
+        // Disable ALL colliders on this object and children
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider col in colliders)
             col.enabled = false;
 
-        // Destroy after death animation
         Destroy(gameObject, 3f);
     }
 }
