@@ -19,19 +19,28 @@ public class ZombieAttack : MonoBehaviour
     }
 
     void HandleDamage(GameObject target)
+{
+    // This will print the name of EVERYTHING the zombie touches
+    Debug.Log("Zombie touched: " + target.name + " with Tag: " + target.tag);
+
+    if (target.CompareTag("Player"))
     {
-        if (target.CompareTag("Player"))
+        Debug.Log("Target IS the Player! Checking for Health Script...");
+        PlayerHealth health = target.GetComponent<PlayerHealth>();
+        
+        if (health != null)
         {
             if (Time.time >= nextAttackTime)
             {
-                PlayerHealth health = target.GetComponent<PlayerHealth>();
-                if (health != null)
-                {
-                    health.TakeDamage(damageAmount);
-                    nextAttackTime = Time.time + attackSpeed;
-                    Debug.Log("OUCH! Zombie hit you for " + damageAmount);
-                }
+                health.TakeDamage(damageAmount);
+                nextAttackTime = Time.time + attackSpeed;
+                Debug.Log("SUCCESS: Damage Sent!");
             }
         }
+        else
+        {
+            Debug.LogError("FAIL: Target has Player tag, but NO PlayerHealth script attached!");
+        }
     }
+}
 }
