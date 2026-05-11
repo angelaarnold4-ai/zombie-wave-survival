@@ -38513,7 +38513,7 @@ MonoBehaviour:
   fireRate: 0.15
   hitLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   sphereCastRadius: 0.15
   muzzleFlash: {fileID: 1550678796}
   hitEffect: {fileID: 0}
