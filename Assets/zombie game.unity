@@ -1414,10 +1414,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -38459,13 +38459,13 @@ Animator:
   m_GameObject: {fileID: 919132147881696782}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 60118bc059580af4084b194974575627, type: 3}
-  m_Controller: {fileID: 9100000, guid: 05cf8df72bbc711499d3599ca28da314, type: 2}
+  m_Controller: {fileID: 9100000, guid: c3892343246f6fa4797c3ecfc11320a1, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_AnimatePhysics: 1
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -38532,7 +38532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExplorerPlayerController
   moveSpeed: 5
   sprintSpeed: 8
-  rotationSpeed: 20
+  rotationSpeed: 25
   gravity: -15
   jumpHeight: 1.2
   groundedOffset: -0.14
@@ -38543,7 +38543,7 @@ MonoBehaviour:
   cameraTarget: {fileID: 1180301823}
   topClamp: 70
   bottomClamp: -30
-  animationBlendSpeed: 0.2
+  animationBlendSpeed: 0.15
 --- !u!114 &5866666019965951700
 MonoBehaviour:
   m_ObjectHideFlags: 0
