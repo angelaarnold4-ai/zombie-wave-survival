@@ -38543,7 +38543,7 @@ MonoBehaviour:
   cameraTarget: {fileID: 1180301823}
   topClamp: 70
   bottomClamp: -30
-  animationBlendSpeed: 0.15
+  animationBlendSpeed: 0.2
 --- !u!114 &5866666019965951700
 MonoBehaviour:
   m_ObjectHideFlags: 0

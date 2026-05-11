@@ -7,9 +7,6 @@ public class ExplorerPlayerShoot : MonoBehaviour
     public float damage = 25f;
     public float range = 200f;
     public float fireRate = 0.15f;
-
-    [Header("Hit Detection")]
-    public LayerMask hitLayers;
     public float sphereCastRadius = 0.15f;
 
     [Header("Effects")]
@@ -32,18 +29,37 @@ public class ExplorerPlayerShoot : MonoBehaviour
         _mainCamera = Camera.main;
         _animator = GetComponentInChildren<Animator>();
         _animFire = Animator.StringToHash("Fire");
-
-        // If no layers set, hit everything
-        if (hitLayers == 0)
-            hitLayers = ~0;
     }
 
     void Update()
     {
         if (Mouse.current.leftButton.isPressed)
-        {
             TryShoot();
-        }
+    }
+
+    bool ShouldSkip(Collider col)
+    {
+        // Skip player's own colliders
+        if (col.transform.IsChildOf(transform) || 
+            col.gameObject == gameObject)
+            return true;
+
+        // Skip triggers — post process volumes, 
+        // reflection probes are all triggers
+        if (col.isTrigger)
+            return true;
+
+        // Skip specific layers
+        if (col.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"))
+            return true;
+
+        if (col.gameObject.layer == LayerMask.NameToLayer("UI"))
+            return true;
+
+        if (col.gameObject.layer == LayerMask.NameToLayer("Water"))
+            return true;
+
+        return false;
     }
 
     void TryShoot()
@@ -63,42 +79,36 @@ public class ExplorerPlayerShoot : MonoBehaviour
 
         if (_mainCamera == null) return;
 
-        // Get exact screen center ray
-        Vector3 screenCenter = new Vector3(
-            Screen.width / 2f, 
-            Screen.height / 2f, 
-            0f);
+        Ray ray = _mainCamera.ScreenPointToRay(
+            new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
 
-        Ray ray = _mainCamera.ScreenPointToRay(screenCenter);
-
-        // Use SphereCast for more forgiving hit detection
+        // Cast against ALL colliders
         RaycastHit[] hits = Physics.SphereCastAll(
             ray.origin,
             sphereCastRadius,
             ray.direction,
-            range,
-            hitLayers);
+            range);
 
-        // Sort by distance — hit closest first
-        System.Array.Sort(hits, (a, b) => 
+        // Sort by distance
+        System.Array.Sort(hits, (a, b) =>
             a.distance.CompareTo(b.distance));
 
         foreach (RaycastHit hit in hits)
         {
-            // Skip the player itself
-            if (hit.collider.transform.IsChildOf(transform) ||
-                hit.collider.gameObject == gameObject)
+            // Skip invalid objects
+            if (ShouldSkip(hit.collider))
                 continue;
 
-            Debug.Log("Hit: " + hit.collider.gameObject.name 
-                + " at distance " + hit.distance);
+            Debug.Log("Valid hit: " + hit.collider.gameObject.name
+                + " layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
+                + " isTrigger: " + hit.collider.isTrigger);
 
             // Spawn hit effect
             if (hitEffect != null)
                 Instantiate(hitEffect, hit.point,
                     Quaternion.LookRotation(hit.normal));
 
-            // Check for zombie on hit object or any parent
+            // Check for zombie
             ZombieAI zombie = hit.collider.GetComponentInParent<ZombieAI>();
             if (zombie != null)
             {
