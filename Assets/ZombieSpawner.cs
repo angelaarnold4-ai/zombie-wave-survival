@@ -1,6 +1,6 @@
 using UnityEngine;
-using TMPro; // Needed for the countdown UI
-using System.Collections; // Needed for the Coroutine (pause)
+using TMPro;
+using System.Collections;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -12,31 +12,33 @@ public class ZombieSpawner : MonoBehaviour
     [Header("Difficulty & Waves")]
     public int zombiesPerWave = 10;
     public float speedBoostPerWave = 0.5f;
-    public float wavePauseDuration = 5f; // Duration of the pause (Item #8)
+    public float wavePauseDuration = 5f;
 
     [Header("UI References")]
-    public TextMeshProUGUI countdownText; // Drag your 'Next Wave' text here
+    public TextMeshProUGUI countdownText;
 
     private int waveNumber = 1;
     private int zombiesSpawnedInWave = 0;
-    private bool isPaused = false; // Prevents spawning during the break
+    private bool isPaused = false;
+
+    // FIX 1: Synchronous guard — set immediately when the wave limit is hit,
+    // before the coroutine even starts. This stops SpawnZombie() from being
+    // called again (and starting duplicate coroutines) on the next Update tick.
+    private bool isWaveComplete = false;
 
     void Start()
     {
         timer = spawnInterval;
-        
-        // Hide countdown text at the start
-        if (countdownText != null) 
+
+        if (countdownText != null)
             countdownText.gameObject.SetActive(false);
 
-        // Tell UI we are starting Wave 1
-        if (ScoreManager.instance != null) 
+        if (ScoreManager.instance != null)
             ScoreManager.instance.UpdateWaveUI(waveNumber);
     }
 
     void Update()
     {
-        // Don't count down the spawn timer if we are in a wave pause
         if (isPaused) return;
 
         timer -= Time.deltaTime;
@@ -50,6 +52,10 @@ public class ZombieSpawner : MonoBehaviour
 
     void SpawnZombie()
     {
+        // FIX 1: Bail out immediately if the wave is already done.
+        // Prevents multiple WavePauseRoutine coroutines from stacking up.
+        if (isWaveComplete) return;
+
         if (spawnPoints.Length == 0 || zombiePrefabs.Length == 0) return;
 
         int spawnIndex = Random.Range(0, spawnPoints.Length);
@@ -58,58 +64,58 @@ public class ZombieSpawner : MonoBehaviour
         int zombieIndex = Random.Range(0, zombiePrefabs.Length);
         GameObject prefabToSpawn = zombiePrefabs[zombieIndex];
 
-        GameObject newZombie = Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
+        GameObject newZombie = Instantiate(
+            prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
 
-        // Apply speed boost (Item #3)
-        UnityEngine.AI.NavMeshAgent agent = newZombie.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        UnityEngine.AI.NavMeshAgent agent =
+            newZombie.GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
-        {
             agent.speed += (waveNumber * speedBoostPerWave);
-        }
 
         zombiesSpawnedInWave++;
 
-        // Check if wave is finished
         if (zombiesSpawnedInWave >= zombiesPerWave)
         {
+            // FIX 1: Set the guard synchronously RIGHT HERE, before yielding
+            // control back to Update. The coroutine sets isPaused a frame later —
+            // this flag plugs that gap.
+            isWaveComplete = true;
             StartCoroutine(WavePauseRoutine());
         }
     }
 
-    // This handles the delay and countdown between waves (Item #8)
     IEnumerator WavePauseRoutine()
     {
         isPaused = true;
         zombiesSpawnedInWave = 0;
 
-        // Show the countdown UI
-        if (countdownText != null) 
+        if (countdownText != null)
             countdownText.gameObject.SetActive(true);
 
         float pauseTimer = wavePauseDuration;
 
         while (pauseTimer > 0)
         {
-            if (countdownText != null) 
+            if (countdownText != null)
                 countdownText.text = "Next Wave in: " + Mathf.Ceil(pauseTimer).ToString();
-            
+
             yield return new WaitForSeconds(1f);
             pauseTimer--;
         }
 
-        // Hide UI and update wave stats
-        if (countdownText != null) 
+        if (countdownText != null)
             countdownText.gameObject.SetActive(false);
-        
+
         waveNumber++;
-        spawnInterval = Mathf.Max(0.5f, spawnInterval - 0.2f); // Make spawning faster
+        spawnInterval = Mathf.Max(0.5f, spawnInterval - 0.2f);
 
         if (ScoreManager.instance != null)
-        {
             ScoreManager.instance.UpdateWaveUI(waveNumber);
-        }
-        
+
         Debug.Log("Wave " + waveNumber + " Started!");
+
+        // FIX 1: Clear BOTH flags so spawning resumes cleanly for the new wave.
+        isWaveComplete = false;
         isPaused = false;
     }
 }

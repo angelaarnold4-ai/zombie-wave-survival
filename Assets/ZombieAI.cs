@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +11,8 @@ public class ZombieAI : MonoBehaviour
 
     [Header("Animation")]
     public float animationDampTime = 0.1f;
+    [Tooltip("Delay (seconds) into the attack animation before damage is applied. Match to your swing keyframe.")]
+    public float damageDelay = 0.4f;
 
     private NavMeshAgent agent;
     private Animator animator;
@@ -42,6 +45,10 @@ public class ZombieAI : MonoBehaviour
             agent.acceleration = 8f;
             agent.stoppingDistance = attackRange - 0.5f;
         }
+
+        // FIX 1: Initialize timer to cooldown so zombie doesn't attack
+        // instantly the first frame it reaches the player.
+        attackTimer = attackCooldown;
     }
 
     void Update()
@@ -66,17 +73,12 @@ public class ZombieAI : MonoBehaviour
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0f)
             {
-                animator?.SetBool(_animAttack, true);
                 attackTimer = attackCooldown;
+                animator?.SetBool(_animAttack, true);
 
-                // Deal damage to player
-                PlayerHealth playerHealth = 
-                    player.GetComponent<PlayerHealth>();
-                if (playerHealth == null)
-                    playerHealth = 
-                        player.GetComponentInChildren<PlayerHealth>();
-                if (playerHealth != null)
-                    playerHealth.TakeDamage(damage);
+                // FIX 2: Delay damage so it lands mid-swing, not instantly.
+                // FIX 3: Coroutine also resets isAttacking after the full swing.
+                StartCoroutine(DealDamageAfterDelay(damageDelay));
             }
 
             UpdateAnimationSpeed(0f);
@@ -92,6 +94,29 @@ public class ZombieAI : MonoBehaviour
         }
     }
 
+    // FIX 2 & 3: Applies damage after the swing animation starts,
+    // then resets the attack Bool so the animator returns to idle.
+    private IEnumerator DealDamageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Zombie may have died or player walked away during the swing
+        if (isDead || player == null) yield break;
+
+        float dist = Vector3.Distance(transform.position, player.position);
+        if (dist > attackRange) yield break;
+
+        PlayerHealth playerHealth =
+            player.GetComponent<PlayerHealth>()
+            ?? player.GetComponentInChildren<PlayerHealth>();
+
+        playerHealth?.TakeDamage(damage);
+
+        // Wait for the remainder of the cooldown, then clear the attack animation
+        yield return new WaitForSeconds(attackCooldown - delay);
+        animator?.SetBool(_animAttack, false);
+    }
+
     void UpdateAnimationSpeed(float speed)
     {
         if (animator == null) return;
@@ -104,7 +129,9 @@ public class ZombieAI : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        // Add kill to score
+        // Stop any pending damage coroutines so a dying zombie can't still hit
+        StopAllCoroutines();
+
         if (ScoreManager.instance != null)
             ScoreManager.instance.AddKill();
 
@@ -113,7 +140,6 @@ public class ZombieAI : MonoBehaviour
 
         animator?.SetBool(_animDead, true);
 
-        // Disable ALL colliders on this object and children
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider col in colliders)
             col.enabled = false;
