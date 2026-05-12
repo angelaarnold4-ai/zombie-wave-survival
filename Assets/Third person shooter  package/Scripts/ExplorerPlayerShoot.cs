@@ -39,17 +39,13 @@ public class ExplorerPlayerShoot : MonoBehaviour
 
     bool ShouldSkip(Collider col)
     {
-        // Skip player's own colliders
         if (col.transform.IsChildOf(transform) || 
             col.gameObject == gameObject)
             return true;
 
-        // Skip triggers — post process volumes, 
-        // reflection probes are all triggers
         if (col.isTrigger)
             return true;
 
-        // Skip specific layers
         if (col.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"))
             return true;
 
@@ -67,7 +63,6 @@ public class ExplorerPlayerShoot : MonoBehaviour
         if (Time.time < _nextFireTime) return;
         _nextFireTime = Time.time + fireRate;
 
-        // Effects
         if (muzzleFlash != null)
             muzzleFlash.Play();
 
@@ -82,20 +77,17 @@ public class ExplorerPlayerShoot : MonoBehaviour
         Ray ray = _mainCamera.ScreenPointToRay(
             new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
 
-        // Cast against ALL colliders
         RaycastHit[] hits = Physics.SphereCastAll(
             ray.origin,
             sphereCastRadius,
             ray.direction,
             range);
 
-        // Sort by distance
         System.Array.Sort(hits, (a, b) =>
             a.distance.CompareTo(b.distance));
 
         foreach (RaycastHit hit in hits)
         {
-            // Skip invalid objects
             if (ShouldSkip(hit.collider))
                 continue;
 
@@ -103,20 +95,17 @@ public class ExplorerPlayerShoot : MonoBehaviour
                 + " layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
                 + " isTrigger: " + hit.collider.isTrigger);
 
-            // Spawn hit effect
             if (hitEffect != null)
                 Instantiate(hitEffect, hit.point,
                     Quaternion.LookRotation(hit.normal));
 
-            // Check for zombie
-            ZombieAI zombie = hit.collider.GetComponentInParent<ZombieAI>();
-            if (zombie != null)
+            ZombieHealth zombieHealth = hit.collider.GetComponentInParent<ZombieHealth>();
+            if (zombieHealth != null)
             {
-                Debug.Log("Zombie killed!");
-                zombie.Die();
+                Debug.Log("Zombie hit for " + damage + " damage!");
+                zombieHealth.TakeDamage(damage);
             }
 
-            // Stop at first valid hit
             break;
         }
     }
